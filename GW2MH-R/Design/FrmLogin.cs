@@ -27,27 +27,14 @@ namespace GW2MH.Design
 
         private void FrmLogin_Shown(object sender, System.EventArgs e)
         {
-            UpdateManager manager = new UpdateManager(new Uri("http://api.yothri.com/gw2mh-r/updates/updates.json"), "<RSAKeyValue><Modulus>4X3eMxw8ZHdXIsDsYHJFYkTiy96ghtLeFMSeDU2wWhWnYn6JR2IDCy1S/eo680tZXHZ4dHXgNZFi+5zaQKg6gN6jC99jyzeLzdnMCIOU95nndD/DeslsQdATlWIbWhaeyoX4m8f6d3/hU4wdb/ECzMJ03AoDs7OFbP3wAnl2oJ3o6ul47D8Gfd8lgjh6m/9Hq9zDbxQVb6XxYLMFixjiNQeXX5pZNrPFY2TEemek2d0bTuZWYadf/T1phdkA2VvBDJ+K+o1rlwhCmKvXLF+JwEm3Z/8uHYHJyxUit4goojBZnYQyZtIqDnlTPjctpBIY52IsYKWPBgmiWFHgUesufeWvs654pBId92pnN2fjawmQQOHfcgByjxo/RSLpanxYcUZEivz0O2W0JDtKrcWRi3o1r4W1egWMrQQ6odc0TRVO5erb0UZiW07lrxqYTTw0uLFxLAVmsr2Fub7OG9Qu3Hs7CnuTeyxkco1w7MsojDSL2xb1CPoQCTlHq7y5c2ZEpnExHUE8VV4f7Wgl5pzElME66yPnW4SxZecRDahfxnPhnJVL9Z3Q0TY0y8Fo6XE6Pt5RHrTHgx2JNVa+HoHbdUMcOWRg7/i1gvEDlZfYl/G8pDos3R8quxFHeXT1OYnZcp5jpkWD9MRW33ms6YJ4U82EPDYiMi1xa4+2o+M8ikci3wE1pa6GOyWRuADZj7RmWggTR+yy+qhM3es0/C2s0BDk92qg7EZC5XAiysXBuVuh9gKEM3gAdzO5RiGYD2z/SdWMMmWjBNCDGh+r05sl8+SDDJ3IcMCplgGuU6uPhAavp5GAKAGJSc9lsqe3N/z3s8buJUF0RTe8PZMq4gP+sdOTV0VLSKcBwfkZT19apT+EZr4iGF2/WyhXeVS+h1oc0+bqEpeQXU1yglH0QjwrI+a2qYKiOTw3nvsGN6fMYWcs2uBJ/KOuFx17ZRUQZTX210fGAFKcVyIkDOaXePr4dlB79J4ABoN+7befa1GygMoBmWM6wXl843eAZWXTa+EPal2vVM40ncG/JRzgdCzfqwaPK7vQ7MjAJNHIaupLFqAbZvbRYGCMEK0F3osADKp795px0t+7qBKVeOMBkcBbmQMXDBPludaA2QmHZp4vEfs+AgNaFsqxB4r7dSFspA3TtdFRONFtCaxPeYQRpFBIXzFTp0Ec1ZPfGwKrEkcm4u3s0ceFs5eLt6HVYmLlOCSPyEZGHjSry5+v8rSRpS3dis0wMY7HU5o2ZOpPzbtzNNwv/+MWV+RAMTTXbOGNKzvBfd0xAZFY4bM1EWLCcNNCBdZa0/levFZio1DJrNiLsm4RHj++4gXM3d4cDkGnMiSl1a8QAMvxqvvYPe/pHysdDQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>", new CultureInfo("en"));
+            UpdateManager manager = new UpdateManager(new Uri("http://api.yothri.com/gw2mh/updates/updates.json"), "<RSAKeyValue><Modulus>v3+k9Sr/lNuu/0aQr0/mXKniHPWe0K+6celr+F8TZDg2A/balGI81B3i0lE4SqBqJTcUrpX4yUKZWYl9jMSQatgRUv0Hj19XcfzVfX0lfeZFwJmgb4KzM3zPPvTxY7BXtV9VLeHhLR4XVl1uExYFjdf4CmJYOFZkWcN62EPRpxySSHLFeKw5kucPZJ90NK4XEvAl6vdN5AAnpByh7HORpLri+wgMG5RlF3myNpnzpbC7b3Kc4AXZqcGZ6G1/h54C5gFwAe/BMb/rTxgnWIXuriVnQEREyrBe9qy17U8nAPXaK6Eqz+mN0aNNfacyLX2vs3+5cmy1bK4+SAmhdV2przDQDS+HHZMkvkW26ukclNVX8/mN3NsHxDpMI9YYn2WQDehKz8TZ/s4zmvEKJBs8UNIuAgsMOxWo13ea1l+kf6Oc8kKr3aYTsrflzjwmWPS0/aAyuvBP4eBWtu5EE3mf6AZHt5StP5URGWjMZQpGljk+iqYRe4MmOUa/32ReF+WDJaSAmBZfLtFCnWa1u859ll9wNt29/hPrHpJU08+IszfjWNj6Sswyjr7pEe8QLeqoPbMi/EBmzAd2esXX8kAa49c72li0j8SI8gxytteahTh0LMaLF9UV46ko09A9MfFGAzEH3l5XPITN0uBjinjnYY/99rAw2aYfa1NzI08Kcmh9vAejI4/YoUcMTK9dD6IzQ0xTcJNiSvoBEAeEQ4W/Tc9DEUfFi/tY9YaF/e7PFiuIa4wddZKxmYpUo2jZsCFkqcmf406ATAP6HwHgtV+6PqSr/9g1LaywVnYAYmmGwWipBxnXBgtTGorrVnxlAwepNZ9ENAIlXpaI9KdAPwpt/6zMmz1K5pvaI4K5isxUrDVaur3pV/xPk6Lem7XIW+o23Ue6OQJ5Ok92Sk2jXeyIEUHKxMX16d2/KPPPmXOZdgpNS/pUfSUO26oPb2dSDNBaV748WFBkK4u6umAcNRfSuZOcQqp/T/DbKy8p0D1v3HhYaUoZsP2iNYM1gwOEOO+Ca5f89g3IYOLJRhJ8bqmKfYG8jT7zd+xPubPRcyw5PFoaQ0QznkXJEaKGyHzqMoXFCRxQpUSz/yIz5t/uymGHuOfOxEDBRvaNrG+mWxdVR3NlP3jPc03wVgNjPJqed+je/yyyJmQXbbyDtLmmeNL037fSnSccTLPv7c4eIdz6LjzivucY3+Woz2ZtFc6h7TmUPrUm75Ib15QMgNpDRumb3HU+d9PHzqjOEivcnSfvaV4w6k4YXNiSilpOhne662W6NW+MNnuncq3i456jZYo5iQbCv3ghMyFL4uRMm71fsEc8/2cqMEedBVJr/xTUipvaE7OeHolxDY+R8P50zifMIQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>", new CultureInfo("en"));
             manager.UpdateSearchFinished += Manager_UpdateSearchFinished;
             manager.SearchForUpdatesAsync();
         }
 
         private void Manager_UpdateSearchFinished(object sender, nUpdate.UpdateEventArgs.UpdateSearchFinishedEventArgs e)
         {
-            if(e.UpdatesAvailable)
-            {
-                var manager = sender as UpdateManager;
-
-                manager.PackagesDownloadFinished += Manager_PackagesDownloadFinished;
-                manager.DownloadPackagesAsync();
-            }
-        }
-
-        private void Manager_PackagesDownloadFinished(object sender, EventArgs e)
-        {
-            var manager = sender as UpdateManager;
-            if(manager.ValidatePackages())
-                manager.InstallPackage();
+            MessageBox.Show(e.UpdatesAvailable.ToString());
         }
     }
 }
