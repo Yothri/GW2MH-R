@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using nUpdate.Core;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden
@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Yothri 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: nUpdateVersion("1.0.0.0")]
 
 // Durch Festlegen von ComVisible auf FALSE werden die Typen in dieser Assembly
 // für COM-Komponenten unsichtbar.  Wenn Sie auf einen Typ in dieser Assembly von
