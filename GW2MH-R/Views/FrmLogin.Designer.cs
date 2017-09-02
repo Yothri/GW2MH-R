@@ -32,11 +32,11 @@
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lbSignUp = new System.Windows.Forms.LinkLabel();
             this.cbRemember = new System.Windows.Forms.CheckBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lbSignUp = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,6 +76,17 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Login";
+            // 
+            // lbSignUp
+            // 
+            this.lbSignUp.AutoSize = true;
+            this.lbSignUp.Location = new System.Drawing.Point(156, 77);
+            this.lbSignUp.Name = "lbSignUp";
+            this.lbSignUp.Size = new System.Drawing.Size(45, 13);
+            this.lbSignUp.TabIndex = 5;
+            this.lbSignUp.TabStop = true;
+            this.lbSignUp.Text = "Sign Up";
+            this.lbSignUp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbSignUp_LinkClicked);
             // 
             // cbRemember
             // 
@@ -117,23 +128,12 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Username: ";
             // 
-            // lbSignUp
-            // 
-            this.lbSignUp.AutoSize = true;
-            this.lbSignUp.Location = new System.Drawing.Point(156, 77);
-            this.lbSignUp.Name = "lbSignUp";
-            this.lbSignUp.Size = new System.Drawing.Size(45, 13);
-            this.lbSignUp.TabIndex = 5;
-            this.lbSignUp.TabStop = true;
-            this.lbSignUp.Text = "Sign Up";
-            this.lbSignUp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbSignUp_LinkClicked);
-            // 
             // FrmLogin
             // 
             this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 116);
+            this.ClientSize = new System.Drawing.Size(299, 117);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -142,6 +142,7 @@
             this.Name = "FrmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GW2MH-R";
+            this.Load += new System.EventHandler(this.FrmLogin_Load);
             this.Shown += new System.EventHandler(this.FrmLogin_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
