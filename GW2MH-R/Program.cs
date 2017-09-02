@@ -11,7 +11,11 @@ namespace GW2MH_R
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+#if DEBUG
+            Application.Run(new FrmMain());
+#else
             Application.Run(new FrmLogin());
+#endif
         }
     }
 }

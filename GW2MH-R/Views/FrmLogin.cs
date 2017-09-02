@@ -54,7 +54,7 @@ namespace GW2MH.Views
                     Properties.Settings.Default.Save();
 
                     Hide();
-                    new FrmMain(response).ShowDialog();
+                    new FrmMain().ShowDialog();
                     Close();
                 }
                 else if (response == null)
