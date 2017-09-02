@@ -54,24 +54,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Design\FrmLogin.cs">
+    <Compile Include="Core\Network\BoardApi.cs" />
+    <Compile Include="Core\Network\LoginResponse.cs" />
+    <Compile Include="Views\FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Design\FrmLogin.Designer.cs">
+    <Compile Include="Views\FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\FrmMain.cs">
+    <Compile Include="Views\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Design\FrmMain.Designer.cs">
+    <Compile Include="Views\FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Design\FrmLogin.resx">
+    <EmbeddedResource Include="Views\FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Design\FrmMain.resx">
+    <EmbeddedResource Include="Views\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -101,5 +103,6 @@
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

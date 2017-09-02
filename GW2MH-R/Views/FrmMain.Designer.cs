@@ -1,4 +1,4 @@
-﻿namespace GW2MH.Design
+﻿namespace GW2MH.Views
 {
     partial class FrmMain
     {

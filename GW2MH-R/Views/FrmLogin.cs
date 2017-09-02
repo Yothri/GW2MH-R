@@ -1,10 +1,11 @@
-﻿using nUpdate.Updating;
+﻿using GW2MH.Core.Network;
+using nUpdate.Updating;
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace GW2MH.Design
+namespace GW2MH.Views
 {
     public partial class FrmLogin : Form
     {
@@ -15,14 +16,47 @@ namespace GW2MH.Design
 
         private void btnCreateAccount_Click(object sender, System.EventArgs e)
         {
-            Process.Start("http://forum.yothri.com/index.php?terms/&aboutToRegister=1");
+            
         }
 
-        private void btnLogin_Click(object sender, System.EventArgs e)
+        private async void btnLogin_Click(object sender, System.EventArgs e)
         {
-            Hide();
-            new FrmMain().ShowDialog();
-            Close();
+            if (txtUsername.Text != string.Empty && txtPassword.Text != string.Empty)
+            {
+                txtUsername.Enabled = false;
+                txtPassword.Enabled = false;
+                btnLogin.Enabled = false;
+                lbSignUp.Enabled = false;
+                cbRemember.Enabled = false;
+
+                var response = await BoardApi.LoginAsync(txtUsername.Text, txtPassword.Text);
+                if (response != null && response.status == "1")
+                {
+                    Hide();
+                    new FrmMain(response).ShowDialog();
+                    Close();
+                }
+                else if (response == null)
+                {
+                    txtUsername.Enabled = true;
+                    txtPassword.Enabled = true;
+                    btnLogin.Enabled = true;
+                    lbSignUp.Enabled = true;
+                    cbRemember.Enabled = true;
+                    MessageBox.Show("An unknown error occured, please try again later.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    txtUsername.Enabled = true;
+                    txtPassword.Enabled = true;
+                    btnLogin.Enabled = true;
+                    lbSignUp.Enabled = true;
+                    cbRemember.Enabled = true;
+                    MessageBox.Show(response.msg, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }                    
+            }
+            else
+                MessageBox.Show("Please enter your forum details to proceed.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void FrmLogin_Shown(object sender, System.EventArgs e)
@@ -48,6 +82,11 @@ namespace GW2MH.Design
             var manager = sender as UpdateManager;
             if(manager.ValidatePackages())
                 manager.InstallPackage();
+        }
+
+        private void lbSignUp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://forum.yothri.com/index.php?terms/&aboutToRegister=1");
         }
     }
 }

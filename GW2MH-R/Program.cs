@@ -1,4 +1,4 @@
-﻿using GW2MH.Design;
+﻿using GW2MH.Views;
 using System;
 using System.Windows.Forms;
 
