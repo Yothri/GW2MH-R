@@ -1,5 +1,4 @@
-﻿using Binarysharp.MemoryManagement;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -12,7 +11,6 @@ namespace GW2MH.Views
         public bool IsFlyhackEnabled { get; private set; }
 
         public Process GuildWarsTwoProcess { get; private set; }
-        public MemorySharp GuildWarsTwoMemory { get; private set; }
 
         public FrmMain()
         {
@@ -36,15 +34,22 @@ namespace GW2MH.Views
             else
             {
                 GuildWarsTwoProcess = processes[0];
-                GuildWarsTwoMemory = new MemorySharp(GuildWarsTwoProcess);
-                
-                
+
+                tmrUpdater.Start();
             }
         }
 
         private void tmrUpdater_Tick(object sender, EventArgs e)
         {
+            //if(GuildWarsTwoMemory.IsRunning)
+            //{
 
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Guild Wars 2 has closed, GW2MH-R will close now.", "Bye", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    Close();
+            //}
         }
 
         private void btnDonate_Click(object sender, EventArgs e)
@@ -59,7 +64,8 @@ namespace GW2MH.Views
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            tmrUpdater.Stop();
+            if(tmrUpdater.Enabled)
+                tmrUpdater.Stop();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
