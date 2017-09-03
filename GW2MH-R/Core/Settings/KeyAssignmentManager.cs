@@ -46,8 +46,6 @@ namespace GW2MH.Core.Settings
                 CurrentButtonToAssign.Text = keyEventArgs.Modifiers == Keys.None ? keyEventArgs.KeyCode.ToString() : keyEventArgs.Modifiers.ToString() + " + " + keyEventArgs.KeyCode.ToString();
                 CurrentButtonToAssign = null;
             }
-
-            SettingsManager.Save();
         }
     }
 }

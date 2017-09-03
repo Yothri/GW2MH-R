@@ -58,5 +58,33 @@ namespace GW2MH.Properties {
                 this["Remember"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfInt xmlns:xsi=\"http://www.w3.org" +
+            "/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <int>" +
+            "2</int>\r\n  <int>49</int>\r\n</ArrayOfInt>")]
+        public int[] hkToggleSpeedhack {
+            get {
+                return ((int[])(this["hkToggleSpeedhack"]));
+            }
+            set {
+                this["hkToggleSpeedhack"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfInt xmlns:xsi=\"http://www.w3.org" +
+            "/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <int>" +
+            "2</int>\r\n  <int>50</int>\r\n</ArrayOfInt>")]
+        public int[] hkToggleFlyhack {
+            get {
+                return ((int[])(this["hkToggleFlyhack"]));
+            }
+            set {
+                this["hkToggleFlyhack"] = value;
+            }
+        }
     }
 }
