@@ -35,6 +35,11 @@ namespace GW2MH.Core.Memory
         public T Read<T>(IntPtr address, bool relative = false)
         {
             var size = (uint)Marshal.SizeOf(typeof(T));
+            return Read<T>(address, size, relative);
+        }
+
+        public T Read<T>(IntPtr address, uint size, bool relative = false)
+        {
             address = relative ? MakeAbsoluteAddress(address) : address;
 
             object obj = null;
@@ -42,7 +47,7 @@ namespace GW2MH.Core.Memory
 
             byte[] buffer = null;
 
-            if(!Native.ReadProcessMemory(ElevatedHandle, address, buffer, size, out bytesRead))
+            if (!Native.ReadProcessMemory(ElevatedHandle, address, buffer, size, out bytesRead))
                 throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
             //if (!Native.ReadProcessMemory(ElevatedHandle, address, obj, size, out bytesRead))
             //    throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
@@ -66,6 +71,32 @@ namespace GW2MH.Core.Memory
 #else
             return new IntPtr(relativeAddress.ToInt32() + TargetProcess.MainModule.BaseAddress.ToInt32());
 #endif
+        }
+
+        public IntPtr Pattern(ProcessModule module, byte[] pattern, string mask)
+        {
+            var processMemoryDump = Read<byte[]>(module.BaseAddress, (uint)pattern.Length);
+
+            var block = new byte[pattern.Length];
+            for(var i = 0; i < processMemoryDump.Length; i++)
+            {
+                Buffer.BlockCopy(processMemoryDump, i, block, 0, pattern.Length);
+
+                if (Compare(block, pattern, mask))
+                    return module.BaseAddress + i;
+            }
+
+            return IntPtr.Zero;
+        }
+
+        private bool Compare(byte[] memory, byte[] pattern, string mask)
+        {
+            for (var i = 0; i < memory.Length; i++)
+            {
+                if (memory[i] != pattern[i] && mask[i] == 'x')
+                    return false;
+            }
+            return true;
         }
 
         public void Dispose()
