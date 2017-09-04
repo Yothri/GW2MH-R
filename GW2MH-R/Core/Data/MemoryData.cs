@@ -63,5 +63,14 @@ namespace GW2MH.Core.Data
             64, // Transform
             564 // MaxSpeed
         };
+
+        public static readonly int[] GravityOffsets = new int[]
+        {
+            144, // ChCliContext
+            152, // Character
+            136, // Agent
+            64, // Transform
+            532 // Gravity
+        };
     }
 }

@@ -2,7 +2,6 @@
 using GW2MH.Core.Memory;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,8 +25,12 @@ namespace GW2MH.Views
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            ttDefault.SetToolTip(numBaseSpeedMultiplier, "If Speedhack is enabled, this defines the speed in percent how fast your character is moving. (Default 100%).");
+            ttDefault.SetToolTip(numBaseSpeedMultiplier, "If Speedhack is enabled, this defines the speed in percent how fast your character is moving.");
             ttDefault.SetToolTip(numExtSpeedMultiplier, "If Speedhack is enabled and Left Shift is pressed, then it multiplies your speed using this value.");
+
+#if DEBUG
+            toolStripDropDownButton2.Visible = true;
+#endif
         }
 
         private async void FrmMain_Shown(object sender, EventArgs e)
@@ -88,6 +91,7 @@ namespace GW2MH.Views
             {
                 CharacterData = new CharacterData();
                 CharacterData.DefaultMoveSpeed = Memory.Read<float>(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets);
+                CharacterData.DefaultGravity = Memory.Read<float>(MemoryData.ContextPtr, MemoryData.GravityOffsets);
             }
         }
 
@@ -97,6 +101,9 @@ namespace GW2MH.Views
             {
                 // Reset Move Speed
                 Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed);
+
+                // Reset Gravity
+                Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, CharacterData.DefaultGravity);
             }
         }
 
@@ -113,6 +120,16 @@ namespace GW2MH.Views
                 }
                 else
                     Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed);
+
+                if(cbFlyhack.Checked)
+                {
+                    if (Convert.ToBoolean(Native.GetAsyncKeyState(Keys.Menu) & 0x8000))
+                        Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, 15f);
+                    else
+                        Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, CharacterData.DefaultGravity);
+                }
+                else
+                    Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, CharacterData.DefaultGravity);
             }
             else
             {
@@ -143,6 +160,36 @@ namespace GW2MH.Views
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void characterPointerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(Memory.IsRunning)
+            {
+                var characterOffsets = new int[] { MemoryData.MoveSpeedOffsets[0], MemoryData.MoveSpeedOffsets[1] };
+
+                Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, characterOffsets).ToString("X8"));
+            }
+        }
+
+        private void agentPointerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Memory.IsRunning)
+            {
+                var agentOffsets = new int[] { MemoryData.MoveSpeedOffsets[0], MemoryData.MoveSpeedOffsets[1], MemoryData.MoveSpeedOffsets[2] };
+
+                Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, agentOffsets).ToString("X8"));
+            }
+        }
+
+        private void contextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Memory.IsRunning)
+            {
+                var transformOffsets = new int[] { MemoryData.MoveSpeedOffsets[0], MemoryData.MoveSpeedOffsets[1], MemoryData.MoveSpeedOffsets[2], MemoryData.MoveSpeedOffsets[3] };
+
+                Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, transformOffsets).ToString("X8"));
+            }
         }
     }
 }

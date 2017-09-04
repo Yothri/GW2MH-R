@@ -33,8 +33,7 @@ namespace GW2MH.Core.Memory
             {
                 var b = (byte[])(object)value;
 
-                if (!Native.WriteProcessMemory(ElevatedHandle, address, b, (uint)b.Length, out bytesWritten))
-                    throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
+                Native.WriteProcessMemory(ElevatedHandle, address, b, (uint)b.Length, out bytesWritten);
             }
             else
             {
@@ -42,8 +41,7 @@ namespace GW2MH.Core.Memory
                 IntPtr pointerToValue = Marshal.AllocHGlobal((int)size);
                 Marshal.StructureToPtr(value, pointerToValue, true);
 
-                if (!Native.WriteProcessMemory(ElevatedHandle, address, pointerToValue, size, out bytesWritten))
-                    throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
+                Native.WriteProcessMemory(ElevatedHandle, address, pointerToValue, size, out bytesWritten);
             }            
         }
 

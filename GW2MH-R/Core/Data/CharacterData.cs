@@ -4,6 +4,7 @@
     {
 
         public float DefaultMoveSpeed { get; set; }
+        public float DefaultGravity { get; set; }
 
         public CharacterData()
         {
