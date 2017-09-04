@@ -1,6 +1,10 @@
-﻿using System;
+﻿using GW2MH.Core.Util;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GW2MH.Core.Memory
 {
@@ -89,6 +93,37 @@ namespace GW2MH.Core.Memory
             return IntPtr.Zero;
         }
 
+        public IntPtr Pattern(ProcessModule module, string pattern)
+        {
+            var data = BuildPatternScanData(pattern);
+            var bPattern = data.Pattern;
+            var mask = data.Mask;
+
+            return Pattern(module, bPattern, mask);
+        }
+
+        private PatternScanData BuildPatternScanData(string pattern)
+        {
+            StringBuilder s = new StringBuilder();
+            List<byte> patternData = new List<byte>();
+
+            pattern.RemoveWhiteSpaces();
+            for(int i = 0; i < pattern.Length; i++)
+            {
+                var b = pattern.Substring(i, 2);
+                if (!b.Contains("?"))
+                {
+                    s.Append("x");
+                    patternData.Add(Convert.ToByte(b, 16));
+                    i++;
+                }
+                else
+                    s.Append("?");
+            }
+
+            return new PatternScanData() { Pattern = patternData.ToArray(), Mask = s.ToString() };
+        }
+
         private bool Compare(byte[] memory, byte[] pattern, string mask)
         {
             for (var i = 0; i < memory.Length; i++)
@@ -102,6 +137,12 @@ namespace GW2MH.Core.Memory
         public void Dispose()
         {
             Native.CloseHandle(ElevatedHandle);
+        }
+
+        private struct PatternScanData
+        {
+            public byte[] Pattern;
+            public string Mask;
         }
     }
 

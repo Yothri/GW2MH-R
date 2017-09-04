@@ -71,6 +71,7 @@
     <Compile Include="Core\Network\BoardApi.cs" />
     <Compile Include="Core\Network\LoginResponse.cs" />
     <Compile Include="Core\Settings\KeyAssignmentManager.cs" />
+    <Compile Include="Core\Util\Ext.cs" />
     <Compile Include="Views\FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
