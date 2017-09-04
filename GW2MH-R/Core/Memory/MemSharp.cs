@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace GW2MH.Core.Memory
 {
@@ -23,17 +22,58 @@ namespace GW2MH.Core.Memory
 
         public MemSharp(int processId) : this(Process.GetProcessById(processId)) { }
 
-        public bool IsRunning => TargetProcess.HasExited;
+        public bool IsRunning => !TargetProcess.HasExited;
 
         public void Write<T>(IntPtr address, T value, bool relative = false)
         {
-            var size = (uint)Marshal.SizeOf(typeof(T));
-            IntPtr pointerToValue = Marshal.AllocHGlobal((int)size);
-            Marshal.StructureToPtr(value, pointerToValue, true);
+            address = relative ? MakeAbsoluteAddress(address) : address;
 
             var bytesWritten = UIntPtr.Zero;
-            if (!Native.WriteProcessMemory(ElevatedHandle, relative ? MakeAbsoluteAddress(address) : address, pointerToValue, size, out bytesWritten))
-                throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
+            if (typeof(T) == typeof(byte[]))
+            {
+                var b = (byte[])(object)value;
+
+                if (!Native.WriteProcessMemory(ElevatedHandle, address, b, (uint)b.Length, out bytesWritten))
+                    throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
+            }
+            else
+            {
+                var size = (uint)Marshal.SizeOf(typeof(T));
+                IntPtr pointerToValue = Marshal.AllocHGlobal((int)size);
+                Marshal.StructureToPtr(value, pointerToValue, true);
+
+                if (!Native.WriteProcessMemory(ElevatedHandle, address, pointerToValue, size, out bytesWritten))
+                    throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
+            }            
+        }
+
+        public void Write<T>(IntPtr address, int[] offsets, T value)
+        {
+            Write(ReadMultiLevelPointer(address, offsets), value, false);
+        }
+
+        public IntPtr ReadMultiLevelPointer(IntPtr address, int[] offsets)
+        {
+            var pointer = address;
+
+            for(int i = 0; i < offsets.Length; i++)
+            {
+                if (i == offsets.Length - 1)
+                    return pointer + offsets[i];
+                else
+                {
+                    pointer = Read<IntPtr>(pointer + offsets[i]);
+                    if (pointer == IntPtr.Zero)
+                        return IntPtr.Zero;
+                }
+            }
+
+            return IntPtr.Zero;
+        }
+
+        public T Read<T>(IntPtr address, int[] offsets)
+        {
+            return Read<T>(ReadMultiLevelPointer(address, offsets), false);
         }
 
         public T Read<T>(IntPtr address, bool relative = false)
@@ -46,17 +86,35 @@ namespace GW2MH.Core.Memory
         {
             address = relative ? MakeAbsoluteAddress(address) : address;
 
-            object obj = null;
+            var buffer = new byte[size];
             var bytesRead = UIntPtr.Zero;
+            if (!Native.ReadProcessMemory(ElevatedHandle, address, buffer, (uint)buffer.Length, out bytesRead))
+                return default(T);
 
-            byte[] buffer = null;
-
-            if (!Native.ReadProcessMemory(ElevatedHandle, address, buffer, size, out bytesRead))
-                throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
-            //if (!Native.ReadProcessMemory(ElevatedHandle, address, obj, size, out bytesRead))
-            //    throw new Exception("Win32 Last Error: " + Marshal.GetLastWin32Error().ToString());
-
-            return (T)obj;
+            if (typeof(T) == typeof(byte[]))
+                return (T)(object)buffer;
+            else if (typeof(T) == typeof(byte) || typeof(T) == typeof(char))
+                return (T)(object)buffer[0];
+            else if (typeof(T) == typeof(double))
+                return (T)(object)BitConverter.ToDouble(buffer, 0);
+            else if (typeof(T) == typeof(float))
+                return (T)(object)BitConverter.ToSingle(buffer, 0);
+            else if (typeof(T) == typeof(int))
+                return (T)(object)BitConverter.ToInt32(buffer, 0);
+            else if (typeof(T) == typeof(uint))
+                return (T)(object)BitConverter.ToUInt32(buffer, 0);
+            else if (typeof(T) == typeof(long))
+                return (T)(object)BitConverter.ToInt64(buffer, 0);
+            else if (typeof(T) == typeof(ulong))
+                return (T)(object)BitConverter.ToUInt64(buffer, 0);
+            else if (typeof(T) == typeof(short))
+                return (T)(object)BitConverter.ToInt16(buffer, 0);
+            else if (typeof(T) == typeof(ushort))
+                return (T)(object)BitConverter.ToUInt16(buffer, 0);
+            else if (typeof(T) == typeof(IntPtr))
+                return IntPtr.Size == sizeof(int) ? (T)(object)new IntPtr(BitConverter.ToInt32(buffer, 0)) : (T)(object)new IntPtr(BitConverter.ToInt64(buffer, 0));
+            else
+                throw new NotSupportedException(string.Format("The Type: {0} is not supported.", typeof(T).ToString()));
         }
 
         public IntPtr MakeRelativeAddress(IntPtr absoluteAddress)
@@ -79,10 +137,10 @@ namespace GW2MH.Core.Memory
 
         public IntPtr Pattern(ProcessModule module, byte[] pattern, string mask)
         {
-            var processMemoryDump = Read<byte[]>(module.BaseAddress, (uint)pattern.Length);
+            var processMemoryDump = Read<byte[]>(module.BaseAddress, (uint)module.ModuleMemorySize);
 
             var block = new byte[pattern.Length];
-            for(var i = 0; i < processMemoryDump.Length; i++)
+            for(var i = 0; i < processMemoryDump.Length - pattern.Length + 1; i++)
             {
                 Buffer.BlockCopy(processMemoryDump, i, block, 0, pattern.Length);
 
@@ -107,7 +165,7 @@ namespace GW2MH.Core.Memory
             StringBuilder s = new StringBuilder();
             List<byte> patternData = new List<byte>();
 
-            pattern.RemoveWhiteSpaces();
+            pattern = pattern.RemoveWhiteSpaces();
             for(int i = 0; i < pattern.Length; i++)
             {
                 var b = pattern.Substring(i, 2);
@@ -118,7 +176,10 @@ namespace GW2MH.Core.Memory
                     i++;
                 }
                 else
+                {
                     s.Append("?");
+                    patternData.Add(0x00);
+                }
             }
 
             return new PatternScanData() { Pattern = patternData.ToArray(), Mask = s.ToString() };
@@ -144,60 +205,5 @@ namespace GW2MH.Core.Memory
             public byte[] Pattern;
             public string Mask;
         }
-    }
-
-    public static class Native
-    {
-
-        private const string KERNEL32 = "kernel32.dll";
-
-        /// <summary>
-        /// Opens an existing local process object.
-        /// </summary>
-        /// <param name="dwDesiredAccess">The access to the process object.</param>
-        /// <param name="bInheritHandle">Determines wether processes created by this process will inherit the handle.</param>
-        /// <param name="processId">The identifier of the local process to be opened.</param>
-        /// <returns>Returns an open handle on success or NULL on error.</returns>
-        [DllImport(KERNEL32, SetLastError = true)]
-        public static extern IntPtr OpenProcess(ProcessAccessFlags dwDesiredAccess, bool bInheritHandle, uint processId);
-
-        /// <summary>
-        /// Closes an open object handle.
-        /// </summary>
-        /// <param name="hObject">A valid handle to an open object.</param>
-        /// <returns>Returns whether the function succeeded.</returns>
-        [DllImport(KERNEL32, SetLastError = true)]
-        public static extern bool CloseHandle(IntPtr hObject);
-
-        [DllImport(KERNEL32, SetLastError = true)]
-        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
-
-        [DllImport(KERNEL32, SetLastError = true)]
-        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, IntPtr lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
-
-        [DllImport(KERNEL32, SetLastError = true)]
-        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesRead);
-
-        [DllImport(KERNEL32, SetLastError = true)]
-        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out, MarshalAs(UnmanagedType.AsAny)] object lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesRead);
-        
-        [Flags]
-        public enum ProcessAccessFlags : uint
-        {
-            All = 0x001F0FFF,
-            Terminate = 0x00000001,
-            CreateThread = 0x00000002,
-            VirtualMemoryOperation = 0x00000008,
-            VirtualMemoryRead = 0x00000010,
-            VirtualMemoryWrite = 0x00000020,
-            DuplicateHandle = 0x00000040,
-            CreateProcess = 0x000000080,
-            SetQuota = 0x00000100,
-            SetInformation = 0x00000200,
-            QueryInformation = 0x00000400,
-            QueryLimitedInformation = 0x00001000,
-            Synchronize = 0x00100000
-        }
-
     }
 }

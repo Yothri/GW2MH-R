@@ -9,8 +9,7 @@ namespace GW2MH.Core.Util
 
         public static string RemoveWhiteSpaces(this string s)
         {
-            s = Regex.Replace(s, @"\s+", string.Empty);
-            return s;
+            return Regex.Replace(s, @"\s+", string.Empty);
         }
 
         public static byte[] ToArray(this string s)

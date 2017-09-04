@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,28 +40,38 @@
             this.tmrUpdater = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.cbSpeedhack = new System.Windows.Forms.CheckBox();
-            this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
-            this.numExtSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numExtSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
+            this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
+            this.cbSpeedhack = new System.Windows.Forms.CheckBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ttDefault = new System.Windows.Forms.ToolTip(this.components);
+            this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numBaseSpeedMultiplier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numExtSpeedMultiplier)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBaseSpeedMultiplier)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip
             // 
             this.statusStrip.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lbStatus});
             this.statusStrip.Location = new System.Drawing.Point(0, 239);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(299, 22);
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // lbStatus
+            // 
+            this.lbStatus.ForeColor = System.Drawing.Color.White;
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(108, 17);
+            this.lbStatus.Text = "Status: Initializing...";
             // 
             // toolStrip
             // 
@@ -112,7 +123,7 @@
             // 
             // tmrUpdater
             // 
-            this.tmrUpdater.Interval = 10;
+            this.tmrUpdater.Interval = 50;
             this.tmrUpdater.Tick += new System.EventHandler(this.tmrUpdater_Tick);
             // 
             // tabControl1
@@ -141,48 +152,23 @@
             this.tabPage1.Text = "Character";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // label2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(276, 188);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "World";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(270, 8);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "%";
             // 
-            // cbSpeedhack
+            // label1
             // 
-            this.cbSpeedhack.AutoSize = true;
-            this.cbSpeedhack.Location = new System.Drawing.Point(8, 7);
-            this.cbSpeedhack.Name = "cbSpeedhack";
-            this.cbSpeedhack.Size = new System.Drawing.Size(81, 17);
-            this.cbSpeedhack.TabIndex = 0;
-            this.cbSpeedhack.Text = "Speedhack";
-            this.cbSpeedhack.UseVisualStyleBackColor = true;
-            // 
-            // numBaseSpeedMultiplier
-            // 
-            this.numBaseSpeedMultiplier.Location = new System.Drawing.Point(99, 6);
-            this.numBaseSpeedMultiplier.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numBaseSpeedMultiplier.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numBaseSpeedMultiplier.Name = "numBaseSpeedMultiplier";
-            this.numBaseSpeedMultiplier.Size = new System.Drawing.Size(69, 20);
-            this.numBaseSpeedMultiplier.TabIndex = 1;
-            this.numBaseSpeedMultiplier.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numBaseSpeedMultiplier.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(174, 8);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(15, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "%";
             // 
             // numExtSpeedMultiplier
             // 
@@ -193,7 +179,7 @@
             0,
             0});
             this.numExtSpeedMultiplier.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
             0});
@@ -207,23 +193,48 @@
             0,
             0});
             // 
-            // label1
+            // numBaseSpeedMultiplier
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 8);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(15, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "%";
+            this.numBaseSpeedMultiplier.Location = new System.Drawing.Point(99, 6);
+            this.numBaseSpeedMultiplier.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numBaseSpeedMultiplier.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numBaseSpeedMultiplier.Name = "numBaseSpeedMultiplier";
+            this.numBaseSpeedMultiplier.Size = new System.Drawing.Size(69, 20);
+            this.numBaseSpeedMultiplier.TabIndex = 1;
+            this.numBaseSpeedMultiplier.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numBaseSpeedMultiplier.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
-            // label2
+            // cbSpeedhack
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(270, 8);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(15, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "%";
+            this.cbSpeedhack.AutoSize = true;
+            this.cbSpeedhack.Location = new System.Drawing.Point(8, 7);
+            this.cbSpeedhack.Name = "cbSpeedhack";
+            this.cbSpeedhack.Size = new System.Drawing.Size(81, 17);
+            this.cbSpeedhack.TabIndex = 0;
+            this.cbSpeedhack.Text = "Speedhack";
+            this.cbSpeedhack.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(291, 188);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "World";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // FrmMain
             // 
@@ -242,13 +253,15 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.Shown += new System.EventHandler(this.FrmMain_Shown);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numBaseSpeedMultiplier)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numExtSpeedMultiplier)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBaseSpeedMultiplier)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,5 +285,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolTip ttDefault;
+        private System.Windows.Forms.ToolStripStatusLabel lbStatus;
     }
 }
