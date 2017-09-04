@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GW2MH.Core.Memory;
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -10,7 +11,8 @@ namespace GW2MH.Views
         public bool IsSpeedhackEnabled { get; private set; }
         public bool IsFlyhackEnabled { get; private set; }
 
-        public Process GuildWarsTwoProcess { get; private set; }
+        public Process TargetProcess { get; private set; }
+        public MemSharp Memory { get; private set; }
 
         public FrmMain()
         {
@@ -25,7 +27,7 @@ namespace GW2MH.Views
 
         private void FrmMain_Shown(object sender, EventArgs e)
         {
-            var processes = Process.GetProcessesByName("Gw2-64");
+            var processes = Process.GetProcessesByName("Tutorial-x86_64");
             if(processes.Length == 0)
             {
                 MessageBox.Show("Guild Wars 2 (64 Bit) seems not to be running, please launch Guild Wars 2 first.", "Game client missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -33,7 +35,10 @@ namespace GW2MH.Views
             }
             else
             {
-                GuildWarsTwoProcess = processes[0];
+                TargetProcess = processes[0];
+                Memory = new MemSharp(TargetProcess);
+
+                var value = Memory.Read<int>(new IntPtr(0x012D48B0));
 
                 tmrUpdater.Start();
             }
