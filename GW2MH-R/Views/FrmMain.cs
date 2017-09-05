@@ -87,7 +87,7 @@ namespace GW2MH.Views
 
         private void InitialTick()
         {
-            if(Memory.IsRunning)
+            if(Memory != null && Memory.IsRunning)
             {
                 CharacterData = new CharacterData();
                 CharacterData.DefaultMoveSpeed = Memory.Read<float>(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets);
@@ -97,7 +97,7 @@ namespace GW2MH.Views
 
         private void FinalTick()
         {
-            if(Memory.IsRunning)
+            if(Memory != null && Memory.IsRunning)
             {
                 // Reset Move Speed
                 Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed);
@@ -153,8 +153,11 @@ namespace GW2MH.Views
         {
             FinalTick();
 
-            if(tmrUpdater.Enabled)
+            if (tmrUpdater.Enabled)
                 tmrUpdater.Stop();
+
+            if (Memory != null && Memory.IsRunning)
+                Memory.Dispose();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

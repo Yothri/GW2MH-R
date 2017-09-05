@@ -41,6 +41,7 @@ namespace GW2MH.Views
                 btnLogin.Enabled = false;
                 lbSignUp.Enabled = false;
                 cbRemember.Enabled = false;
+                Cursor = Cursors.WaitCursor;
 
                 var response = await BoardApi.LoginAsync(txtUsername.Text, txtPassword.Text);
                 if (response != null && response.status == "1")
@@ -78,6 +79,8 @@ namespace GW2MH.Views
             }
             else
                 MessageBox.Show("Please enter your forum details to proceed.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            Cursor = Cursors.Default;
         }
 
         private void lbSignUp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

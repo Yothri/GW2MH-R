@@ -117,20 +117,12 @@ namespace GW2MH.Core.Memory
 
         public IntPtr MakeRelativeAddress(IntPtr absoluteAddress)
         {
-#if WIN64
             return new IntPtr(absoluteAddress.ToInt64() - TargetProcess.MainModule.BaseAddress.ToInt64());
-#else
-            return new IntPtr(absoluteAddress.ToInt32() - TargetProcess.MainModule.BaseAddress.ToInt32());
-#endif
         }
 
         public IntPtr MakeAbsoluteAddress(IntPtr relativeAddress)
         {
-#if WIN64
             return new IntPtr(relativeAddress.ToInt64() + TargetProcess.MainModule.BaseAddress.ToInt64());
-#else
-            return new IntPtr(relativeAddress.ToInt32() + TargetProcess.MainModule.BaseAddress.ToInt32());
-#endif
         }
 
         public IntPtr Pattern(ProcessModule module, byte[] pattern, string mask)
