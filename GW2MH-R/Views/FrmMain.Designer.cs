@@ -31,14 +31,21 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DevTools = new System.Windows.Forms.ToolStripDropDownButton();
+            this.clipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.agentPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.characterPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDonate = new System.Windows.Forms.ToolStripButton();
             this.tmrUpdater = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cbFlyhack = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.numExtSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
@@ -46,13 +53,7 @@
             this.cbSpeedhack = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ttDefault = new System.Windows.Forms.ToolTip(this.components);
-            this.cbFlyhack = new System.Windows.Forms.CheckBox();
-            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.clipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.characterPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.agentPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -72,11 +73,18 @@
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip1";
             // 
+            // lbStatus
+            // 
+            this.lbStatus.ForeColor = System.Drawing.Color.White;
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(108, 17);
+            this.lbStatus.Text = "Status: Not Ingame";
+            // 
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1,
-            this.toolStripDropDownButton2,
+            this.DevTools,
             this.btnDonate});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
@@ -110,6 +118,50 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // DevTools
+            // 
+            this.DevTools.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.DevTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clipboardToolStripMenuItem});
+            this.DevTools.Image = ((System.Drawing.Image)(resources.GetObject("DevTools.Image")));
+            this.DevTools.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.DevTools.Name = "DevTools";
+            this.DevTools.Size = new System.Drawing.Size(71, 22);
+            this.DevTools.Text = "Dev Tools";
+            this.DevTools.Visible = false;
+            // 
+            // clipboardToolStripMenuItem
+            // 
+            this.clipboardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.agentPointerToolStripMenuItem,
+            this.characterPointerToolStripMenuItem,
+            this.contextToolStripMenuItem,
+            this.contextPointerToolStripMenuItem});
+            this.clipboardToolStripMenuItem.Name = "clipboardToolStripMenuItem";
+            this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clipboardToolStripMenuItem.Text = "Clipboard";
+            // 
+            // agentPointerToolStripMenuItem
+            // 
+            this.agentPointerToolStripMenuItem.Name = "agentPointerToolStripMenuItem";
+            this.agentPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.agentPointerToolStripMenuItem.Text = "Agent Pointer";
+            this.agentPointerToolStripMenuItem.Click += new System.EventHandler(this.agentPointerToolStripMenuItem_Click);
+            // 
+            // characterPointerToolStripMenuItem
+            // 
+            this.characterPointerToolStripMenuItem.Name = "characterPointerToolStripMenuItem";
+            this.characterPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.characterPointerToolStripMenuItem.Text = "Character Pointer";
+            this.characterPointerToolStripMenuItem.Click += new System.EventHandler(this.characterPointerToolStripMenuItem_Click);
+            // 
+            // contextToolStripMenuItem
+            // 
+            this.contextToolStripMenuItem.Name = "contextToolStripMenuItem";
+            this.contextToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.contextToolStripMenuItem.Text = "Transform Pointer";
+            this.contextToolStripMenuItem.Click += new System.EventHandler(this.contextToolStripMenuItem_Click);
             // 
             // btnDonate
             // 
@@ -152,6 +204,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Character";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cbFlyhack
+            // 
+            this.cbFlyhack.AutoSize = true;
+            this.cbFlyhack.Location = new System.Drawing.Point(8, 32);
+            this.cbFlyhack.Name = "cbFlyhack";
+            this.cbFlyhack.Size = new System.Drawing.Size(63, 17);
+            this.cbFlyhack.TabIndex = 5;
+            this.cbFlyhack.Text = "Flyhack";
+            this.cbFlyhack.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -237,65 +299,12 @@
             this.tabPage2.Text = "World";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // cbFlyhack
+            // contextPointerToolStripMenuItem
             // 
-            this.cbFlyhack.AutoSize = true;
-            this.cbFlyhack.Location = new System.Drawing.Point(8, 32);
-            this.cbFlyhack.Name = "cbFlyhack";
-            this.cbFlyhack.Size = new System.Drawing.Size(63, 17);
-            this.cbFlyhack.TabIndex = 5;
-            this.cbFlyhack.Text = "Flyhack";
-            this.cbFlyhack.UseVisualStyleBackColor = true;
-            // 
-            // lbStatus
-            // 
-            this.lbStatus.ForeColor = System.Drawing.Color.White;
-            this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(108, 17);
-            this.lbStatus.Text = "Status: Initializing...";
-            // 
-            // toolStripDropDownButton2
-            // 
-            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clipboardToolStripMenuItem});
-            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
-            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
-            this.toolStripDropDownButton2.Size = new System.Drawing.Size(71, 22);
-            this.toolStripDropDownButton2.Text = "Dev Tools";
-            this.toolStripDropDownButton2.Visible = false;
-            // 
-            // clipboardToolStripMenuItem
-            // 
-            this.clipboardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.agentPointerToolStripMenuItem,
-            this.characterPointerToolStripMenuItem,
-            this.contextToolStripMenuItem});
-            this.clipboardToolStripMenuItem.Name = "clipboardToolStripMenuItem";
-            this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.clipboardToolStripMenuItem.Text = "Clipboard";
-            // 
-            // characterPointerToolStripMenuItem
-            // 
-            this.characterPointerToolStripMenuItem.Name = "characterPointerToolStripMenuItem";
-            this.characterPointerToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.characterPointerToolStripMenuItem.Text = "Character Pointer";
-            this.characterPointerToolStripMenuItem.Click += new System.EventHandler(this.characterPointerToolStripMenuItem_Click);
-            // 
-            // agentPointerToolStripMenuItem
-            // 
-            this.agentPointerToolStripMenuItem.Name = "agentPointerToolStripMenuItem";
-            this.agentPointerToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.agentPointerToolStripMenuItem.Text = "Agent Pointer";
-            this.agentPointerToolStripMenuItem.Click += new System.EventHandler(this.agentPointerToolStripMenuItem_Click);
-            // 
-            // contextToolStripMenuItem
-            // 
-            this.contextToolStripMenuItem.Name = "contextToolStripMenuItem";
-            this.contextToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.contextToolStripMenuItem.Text = "Transform Pointer";
-            this.contextToolStripMenuItem.Click += new System.EventHandler(this.contextToolStripMenuItem_Click);
+            this.contextPointerToolStripMenuItem.Name = "contextPointerToolStripMenuItem";
+            this.contextPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.contextPointerToolStripMenuItem.Text = "Context Pointer";
+            this.contextPointerToolStripMenuItem.Click += new System.EventHandler(this.contextPointerToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -347,11 +356,12 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolTip ttDefault;
         private System.Windows.Forms.CheckBox cbFlyhack;
-        private System.Windows.Forms.ToolStripStatusLabel lbStatus;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripDropDownButton DevTools;
         private System.Windows.Forms.ToolStripMenuItem clipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem characterPointerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem agentPointerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel lbStatus;
+        private System.Windows.Forms.ToolStripMenuItem contextPointerToolStripMenuItem;
     }
 }

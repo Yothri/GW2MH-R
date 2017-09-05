@@ -29,7 +29,7 @@ namespace GW2MH.Views
             ttDefault.SetToolTip(numExtSpeedMultiplier, "If Speedhack is enabled and Left Shift is pressed, then it multiplies your speed using this value.");
 
 #if DEBUG
-            toolStripDropDownButton2.Visible = true;
+            DevTools.Visible = true;
 #endif
         }
 
@@ -73,9 +73,7 @@ namespace GW2MH.Views
 
                 if(MemoryData.ContextPtr != IntPtr.Zero)
                 {
-                    lbStatus.Text = string.Format("Status: Found Context @ 0x{0:X8}", MemoryData.ContextPtr.ToInt64());
-                    InitialTick();
-                    tmrUpdater.Start();
+                    await InitialTick();
                 }
                 else
                 {
@@ -85,19 +83,28 @@ namespace GW2MH.Views
             }
         }
 
-        private void InitialTick()
+        private async Task InitialTick()
         {
-            if(Memory != null && Memory.IsRunning)
+            CharacterData = new CharacterData(Memory);
+
+            await Task.Factory.StartNew(() =>
             {
-                CharacterData = new CharacterData();
+                while (!CharacterData.IsCharacterIngame) { }
+            });
+
+            if (Memory != null && Memory.IsRunning)
+            {
                 CharacterData.DefaultMoveSpeed = Memory.Read<float>(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets);
                 CharacterData.DefaultGravity = Memory.Read<float>(MemoryData.ContextPtr, MemoryData.GravityOffsets);
+                
+                tmrUpdater.Start();
+                lbStatus.Text = string.Format("Status: Ingame");
             }
         }
 
         private void FinalTick()
         {
-            if(Memory != null && Memory.IsRunning)
+            if(Memory != null && Memory.IsRunning && CharacterData != null)
             {
                 // Reset Move Speed
                 Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed);
@@ -107,29 +114,38 @@ namespace GW2MH.Views
             }
         }
 
-        private void tmrUpdater_Tick(object sender, EventArgs e)
+        private async void tmrUpdater_Tick(object sender, EventArgs e)
         {
-            if (Memory.IsRunning)
+            if (Memory != null && Memory.IsRunning)
             {
-                if(cbSpeedhack.Checked)
+                if(CharacterData.IsCharacterIngame)
                 {
-                    if (Convert.ToBoolean(Native.GetAsyncKeyState(Keys.LShiftKey) & 0x8000))
-                        Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed * ((float)numExtSpeedMultiplier.Value / 100f));
+                    if (cbSpeedhack.Checked)
+                    {
+                        if (Convert.ToBoolean(Native.GetAsyncKeyState(Keys.LShiftKey) & 0x8000))
+                            Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed * ((float)numExtSpeedMultiplier.Value / 100f));
+                        else
+                            Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed * ((float)numBaseSpeedMultiplier.Value / 100f));
+                    }
                     else
-                        Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed * ((float)numBaseSpeedMultiplier.Value / 100f));
-                }
-                else
-                    Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed);
+                        Memory.Write(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets, CharacterData.DefaultMoveSpeed);
 
-                if(cbFlyhack.Checked)
-                {
-                    if (Convert.ToBoolean(Native.GetAsyncKeyState(Keys.Menu) & 0x8000))
-                        Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, 15f);
+                    if (cbFlyhack.Checked)
+                    {
+                        if (Convert.ToBoolean(Native.GetAsyncKeyState(Keys.Menu) & 0x8000))
+                            Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, 15f);
+                        else
+                            Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, CharacterData.DefaultGravity);
+                    }
                     else
                         Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, CharacterData.DefaultGravity);
                 }
                 else
-                    Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, CharacterData.DefaultGravity);
+                {
+                    tmrUpdater.Stop();
+                    lbStatus.Text = string.Format("Status: Not Ingame");
+                    await InitialTick();
+                }
             }
             else
             {
@@ -192,6 +208,16 @@ namespace GW2MH.Views
                 var transformOffsets = new int[] { MemoryData.MoveSpeedOffsets[0], MemoryData.MoveSpeedOffsets[1], MemoryData.MoveSpeedOffsets[2], MemoryData.MoveSpeedOffsets[3] };
 
                 Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, transformOffsets).ToString("X8"));
+            }
+        }
+
+        private void contextPointerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Memory.IsRunning)
+            {
+                var contextOffsets = new int[] { MemoryData.MoveSpeedOffsets[0] };
+
+                Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, contextOffsets).ToString("X8"));
             }
         }
     }
