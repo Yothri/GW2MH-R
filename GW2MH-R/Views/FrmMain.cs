@@ -1,5 +1,6 @@
 ﻿using GW2MH.Core.Data;
 using GW2MH.Core.Memory;
+using GW2MH.Core.Network;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,9 +19,16 @@ namespace GW2MH.Views
 
         internal CharacterData CharacterData { get; private set; }
 
+        internal LoginResponse LoginResponse { get; private set; }
+
         public FrmMain()
         {
             InitializeComponent();
+        }
+
+        public FrmMain(LoginResponse loginResponse) : this()
+        {
+            LoginResponse = loginResponse;
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
