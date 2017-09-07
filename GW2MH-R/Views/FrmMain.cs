@@ -1,8 +1,10 @@
 ﻿using GW2MH.Core.Data;
 using GW2MH.Core.Memory;
 using GW2MH.Core.Network;
+using PayPal.Api;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +26,11 @@ namespace GW2MH.Views
         public FrmMain()
         {
             InitializeComponent();
+
+            LoginResponse = new LoginResponse()
+            {
+                name = "Yothri"
+            };
         }
 
         public FrmMain(LoginResponse loginResponse) : this()
@@ -226,7 +233,50 @@ namespace GW2MH.Views
 
         private void btnBuyUnlimited_Click(object sender, EventArgs e)
         {
+            var accessToken = new OAuthTokenCredential(
+                "AYxsS5oBF7qELt4oHiK57cR3XJEZSr2P0oXqiuMS0NOuTSnmbyvALA_x50uB8tVDG6C4IncWPjpROVJu", 
+                "EEK-YEerLc8JDAaSgv9fKCyon78oPJycUbMUTMQX-zjoed3RlgNQsyDya7AQSVHcrcLQdVSphKVRgvzY").GetAccessToken();
 
+            var apiContext = new APIContext(accessToken);
+            var payment = new Payment()
+            {
+                intent = "sale",
+                payer = new Payer()
+                {
+                    payment_method = "paypal"
+                },
+                transactions = new System.Collections.Generic.List<Transaction>()
+                {
+                    {
+                        new Transaction()
+                        {
+                            amount = new Amount()
+                            {
+                                currency = "EUR",
+                                total = "5"
+                            },
+                            description = "Feature Limitation Unlock for GW2MH-R.",
+                            custom = LoginResponse.name,
+                            payment_options = new PaymentOptions()
+                            {
+                                 allowed_payment_method= "INSTANT_FUNDING_SOURCE"
+                            }
+                        }
+                    },
+                },
+                redirect_urls = new RedirectUrls()
+                {
+                    return_url = "https://www.paypal.com/return",
+                    cancel_url = "https://www.paypal.com/cancel"
+                }
+            }.Create(apiContext);
+
+            Process.Start(payment.GetApprovalUrl());
+
+            while(payment.state != "approved")
+                payment.Update(apiContext, new PatchRequest() { });
+
+            payment = payment.Execute(apiContext, new PaymentExecution() {  transactions = payment.transactions, payer_id = payment.payer.payer_info.payer_id });
         }
     }
 }

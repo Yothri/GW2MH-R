@@ -59,6 +59,9 @@
     <Reference Include="nUpdate, Version=3.1.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\nUpdate.ProvideTAP.3.1.8\lib\net40\nUpdate.dll</HintPath>
     </Reference>
+    <Reference Include="PayPal, Version=1.9.0.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.0\lib\net45\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />

@@ -33,7 +33,6 @@
             this.tmrUpdater = new System.Windows.Forms.Timer(this.components);
             this.ttDefault = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +53,7 @@
             this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
             this.cbSpeedhack = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -77,13 +77,6 @@
             this.statusStrip.Size = new System.Drawing.Size(299, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
-            // 
-            // lbStatus
-            // 
-            this.lbStatus.ForeColor = System.Drawing.Color.White;
-            this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(108, 17);
-            this.lbStatus.Text = "Status: Not Ingame";
             // 
             // toolStrip
             // 
@@ -295,10 +288,17 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(291, 213);
+            this.tabPage2.Size = new System.Drawing.Size(291, 188);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "World";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // lbStatus
+            // 
+            this.lbStatus.ForeColor = System.Drawing.Color.White;
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(108, 17);
+            this.lbStatus.Text = "Status: Not Ingame";
             // 
             // FrmMain
             // 
@@ -335,7 +335,6 @@
         private System.Windows.Forms.Timer tmrUpdater;
         private System.Windows.Forms.ToolTip ttDefault;
         private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel lbStatus;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
@@ -356,5 +355,6 @@
         private System.Windows.Forms.NumericUpDown numBaseSpeedMultiplier;
         private System.Windows.Forms.CheckBox cbSpeedhack;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ToolStripStatusLabel lbStatus;
     }
 }

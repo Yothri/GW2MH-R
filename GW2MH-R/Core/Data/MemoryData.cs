@@ -5,7 +5,7 @@ namespace GW2MH.Core.Data
     internal static class MemoryData
     {
 
-        public static readonly string ContextCalcPattern = "8B 0D CA 90 B7 01";
+        public static readonly string ContextCalcPattern = "8B 0D ? ? ? ? 65 48 8b 04 25 58 00 00 00 ba 08 00 00 00 48 8b 04 c8 48 8b 04 02 c3";
         public static readonly int ContextCalcJumpPatchOffset = 6;
         public static byte[] ContextCalcJumpPatch(IntPtr jmpLocation)
         {
