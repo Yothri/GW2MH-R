@@ -155,11 +155,6 @@ namespace GW2MH.Views
             }
         }
 
-        private void btnDonate_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EHZVSBXL7X2Q6");
-        }
-
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FrmSettings().ShowDialog();
@@ -219,6 +214,11 @@ namespace GW2MH.Views
 
                 Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, contextOffsets).ToString("X8"));
             }
+        }
+
+        private void btnBuyUnlimited_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

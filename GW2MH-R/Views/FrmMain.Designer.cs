@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
+            this.tmrUpdater = new System.Windows.Forms.Timer(this.components);
+            this.ttDefault = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
@@ -41,8 +43,8 @@
             this.agentPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.characterPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnDonate = new System.Windows.Forms.ToolStripButton();
-            this.tmrUpdater = new System.Windows.Forms.Timer(this.components);
+            this.contextPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnBuyUnlimited = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cbFlyhack = new System.Windows.Forms.CheckBox();
@@ -52,8 +54,6 @@
             this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
             this.cbSpeedhack = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.ttDefault = new System.Windows.Forms.ToolTip(this.components);
-            this.contextPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -61,6 +61,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numExtSpeedMultiplier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBaseSpeedMultiplier)).BeginInit();
             this.SuspendLayout();
+            // 
+            // tmrUpdater
+            // 
+            this.tmrUpdater.Interval = 50;
+            this.tmrUpdater.Tick += new System.EventHandler(this.tmrUpdater_Tick);
             // 
             // statusStrip
             // 
@@ -70,7 +75,7 @@
             this.statusStrip.Location = new System.Drawing.Point(0, 239);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(299, 22);
-            this.statusStrip.TabIndex = 0;
+            this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
             // 
             // lbStatus
@@ -85,11 +90,11 @@
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1,
             this.DevTools,
-            this.btnDonate});
+            this.btnBuyUnlimited});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(299, 25);
-            this.toolStrip.TabIndex = 1;
+            this.toolStrip.TabIndex = 5;
             this.toolStrip.Text = "toolStrip1";
             // 
             // toolStripDropDownButton1
@@ -110,14 +115,12 @@
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.settingsToolStripMenuItem.Text = "Settings (Comes Later)";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // DevTools
             // 
@@ -139,7 +142,7 @@
             this.contextToolStripMenuItem,
             this.contextPointerToolStripMenuItem});
             this.clipboardToolStripMenuItem.Name = "clipboardToolStripMenuItem";
-            this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.clipboardToolStripMenuItem.Text = "Clipboard";
             // 
             // agentPointerToolStripMenuItem
@@ -147,36 +150,34 @@
             this.agentPointerToolStripMenuItem.Name = "agentPointerToolStripMenuItem";
             this.agentPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.agentPointerToolStripMenuItem.Text = "Agent Pointer";
-            this.agentPointerToolStripMenuItem.Click += new System.EventHandler(this.agentPointerToolStripMenuItem_Click);
             // 
             // characterPointerToolStripMenuItem
             // 
             this.characterPointerToolStripMenuItem.Name = "characterPointerToolStripMenuItem";
             this.characterPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.characterPointerToolStripMenuItem.Text = "Character Pointer";
-            this.characterPointerToolStripMenuItem.Click += new System.EventHandler(this.characterPointerToolStripMenuItem_Click);
             // 
             // contextToolStripMenuItem
             // 
             this.contextToolStripMenuItem.Name = "contextToolStripMenuItem";
             this.contextToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.contextToolStripMenuItem.Text = "Transform Pointer";
-            this.contextToolStripMenuItem.Click += new System.EventHandler(this.contextToolStripMenuItem_Click);
             // 
-            // btnDonate
+            // contextPointerToolStripMenuItem
             // 
-            this.btnDonate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnDonate.Image = ((System.Drawing.Image)(resources.GetObject("btnDonate.Image")));
-            this.btnDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDonate.Name = "btnDonate";
-            this.btnDonate.Size = new System.Drawing.Size(49, 22);
-            this.btnDonate.Text = "Donate";
-            this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
+            this.contextPointerToolStripMenuItem.Name = "contextPointerToolStripMenuItem";
+            this.contextPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.contextPointerToolStripMenuItem.Text = "Context Pointer";
             // 
-            // tmrUpdater
+            // btnBuyUnlimited
             // 
-            this.tmrUpdater.Interval = 50;
-            this.tmrUpdater.Tick += new System.EventHandler(this.tmrUpdater_Tick);
+            this.btnBuyUnlimited.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnBuyUnlimited.Image = ((System.Drawing.Image)(resources.GetObject("btnBuyUnlimited.Image")));
+            this.btnBuyUnlimited.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnBuyUnlimited.Name = "btnBuyUnlimited";
+            this.btnBuyUnlimited.Size = new System.Drawing.Size(125, 22);
+            this.btnBuyUnlimited.Text = "Unlock Feature Limits";
+            this.btnBuyUnlimited.Click += new System.EventHandler(this.btnBuyUnlimited_Click);
             // 
             // tabControl1
             // 
@@ -187,7 +188,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(299, 214);
-            this.tabControl1.TabIndex = 2;
+            this.tabControl1.TabIndex = 6;
             // 
             // tabPage1
             // 
@@ -237,7 +238,7 @@
             // 
             this.numExtSpeedMultiplier.Location = new System.Drawing.Point(195, 6);
             this.numExtSpeedMultiplier.Maximum = new decimal(new int[] {
-            1000,
+            250,
             0,
             0,
             0});
@@ -251,7 +252,7 @@
             this.numExtSpeedMultiplier.TabIndex = 2;
             this.numExtSpeedMultiplier.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numExtSpeedMultiplier.Value = new decimal(new int[] {
-            500,
+            250,
             0,
             0,
             0});
@@ -294,17 +295,10 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(291, 188);
+            this.tabPage2.Size = new System.Drawing.Size(291, 213);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "World";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // contextPointerToolStripMenuItem
-            // 
-            this.contextPointerToolStripMenuItem.Name = "contextPointerToolStripMenuItem";
-            this.contextPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.contextPointerToolStripMenuItem.Text = "Context Pointer";
-            this.contextPointerToolStripMenuItem.Click += new System.EventHandler(this.contextPointerToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -338,30 +332,29 @@
         }
 
         #endregion
-
+        private System.Windows.Forms.Timer tmrUpdater;
+        private System.Windows.Forms.ToolTip ttDefault;
         private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel lbStatus;
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripButton btnDonate;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.Timer tmrUpdater;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.NumericUpDown numBaseSpeedMultiplier;
-        private System.Windows.Forms.CheckBox cbSpeedhack;
-        private System.Windows.Forms.NumericUpDown numExtSpeedMultiplier;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolTip ttDefault;
-        private System.Windows.Forms.CheckBox cbFlyhack;
         private System.Windows.Forms.ToolStripDropDownButton DevTools;
         private System.Windows.Forms.ToolStripMenuItem clipboardToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem characterPointerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem agentPointerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem characterPointerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contextToolStripMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel lbStatus;
         private System.Windows.Forms.ToolStripMenuItem contextPointerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton btnBuyUnlimited;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.CheckBox cbFlyhack;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numExtSpeedMultiplier;
+        private System.Windows.Forms.NumericUpDown numBaseSpeedMultiplier;
+        private System.Windows.Forms.CheckBox cbSpeedhack;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
