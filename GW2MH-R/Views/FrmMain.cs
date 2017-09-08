@@ -1,10 +1,8 @@
 ﻿using GW2MH.Core.Data;
 using GW2MH.Core.Memory;
 using GW2MH.Core.Network;
-using PayPal.Api;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -38,7 +36,7 @@ namespace GW2MH.Views
             LoginResponse = loginResponse;
         }
 
-        private void FrmMain_Load(object sender, EventArgs e)
+        private async void FrmMain_Load(object sender, EventArgs e)
         {
             ttDefault.SetToolTip(numBaseSpeedMultiplier, "If Speedhack is enabled, this defines the speed in percent how fast your character is moving.");
             ttDefault.SetToolTip(numExtSpeedMultiplier, "If Speedhack is enabled and Left Shift is pressed, then it multiplies your speed using this value.");
@@ -46,6 +44,14 @@ namespace GW2MH.Views
 #if DEBUG
             DevTools.Visible = true;
 #endif
+
+            if (await PaymentApi.PaymentDetails(LoginResponse.name))
+            {
+                numBaseSpeedMultiplier.Maximum = 999999;
+                numExtSpeedMultiplier.Maximum = 999999;
+            }
+            else
+                btnBuyUnlimited.Visible = true;
         }
 
         private async void FrmMain_Shown(object sender, EventArgs e)
@@ -235,56 +241,20 @@ namespace GW2MH.Views
 
         private async void btnBuyUnlimited_Click(object sender, EventArgs e)
         {
-            var dr = MessageBox.Show("Unlocking the feature limits costs 5€, press Yes if you want to unlock the features now or No to keep everything as it is.", "Feature Unlock", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var dr = MessageBox.Show("To unlock the feature limitation of GW2MH-R you need to pay 5€, do you want to buy now?", "Unlock Feature Limits", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if(dr == DialogResult.Yes)
             {
-                MessageBox.Show("We are creating your payment now, please approve the payment in the browser window.", "PayPal Approval", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Cursor = Cursors.WaitCursor;
-                var payment = await Task.Factory.StartNew(() =>
-                {
-                    var accessToken = new OAuthTokenCredential(
-                    "AYxsS5oBF7qELt4oHiK57cR3XJEZSr2P0oXqiuMS0NOuTSnmbyvALA_x50uB8tVDG6C4IncWPjpROVJu",
-                    "EEK-YEerLc8JDAaSgv9fKCyon78oPJycUbMUTMQX-zjoed3RlgNQsyDya7AQSVHcrcLQdVSphKVRgvzY").GetAccessToken();
 
-                    var apiContext = new APIContext(accessToken);
-                    return new Payment()
-                    {
-                        intent = "sale",
-                        payer = new Payer()
-                        {
-                            payment_method = "paypal"
-                        },
-                        transactions = new System.Collections.Generic.List<Transaction>()
+                var paymentCreateResponse = await PaymentApi.CreatePayment(LoginResponse.name);
+                if (paymentCreateResponse.success)
                 {
-                    {
-                        new Transaction()
-                        {
-                            amount = new Amount()
-                            {
-                                currency = "EUR",
-                                total = "5"
-                            },
-                            description = "Feature Limitation Unlock for GW2MH-R.",
-                            custom = LoginResponse.name,
-                            payment_options = new PaymentOptions()
-                            {
-                                 allowed_payment_method= "INSTANT_FUNDING_SOURCE"
-                            }
-                        }
-                    },
-                },
-                        redirect_urls = new RedirectUrls()
-                        {
-                            return_url = "http://api.yothri.com/paypal/test.php",
-                            cancel_url = "https://www.paypal.com/cancel"
-                        }
-                    }.Create(apiContext);
-                });
+                    Process.Start(paymentCreateResponse.approvalLink);
+                }
+                else
+                    MessageBox.Show(paymentCreateResponse.error_message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 Cursor = Cursors.Default;
-                Process.Start(payment.GetApprovalUrl());
-
-                lbStatus.Text = "Status: Waiting for payment approval...";
             }
         }
     }

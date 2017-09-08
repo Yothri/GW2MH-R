@@ -33,6 +33,7 @@
             this.tmrUpdater = new System.Windows.Forms.Timer(this.components);
             this.ttDefault = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +54,6 @@
             this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
             this.cbSpeedhack = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -77,6 +77,13 @@
             this.statusStrip.Size = new System.Drawing.Size(299, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // lbStatus
+            // 
+            this.lbStatus.ForeColor = System.Drawing.Color.White;
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(108, 17);
+            this.lbStatus.Text = "Status: Not Ingame";
             // 
             // toolStrip
             // 
@@ -170,6 +177,7 @@
             this.btnBuyUnlimited.Name = "btnBuyUnlimited";
             this.btnBuyUnlimited.Size = new System.Drawing.Size(125, 22);
             this.btnBuyUnlimited.Text = "Unlock Feature Limits";
+            this.btnBuyUnlimited.Visible = false;
             this.btnBuyUnlimited.Click += new System.EventHandler(this.btnBuyUnlimited_Click);
             // 
             // tabControl1
@@ -253,11 +261,6 @@
             // numBaseSpeedMultiplier
             // 
             this.numBaseSpeedMultiplier.Location = new System.Drawing.Point(99, 6);
-            this.numBaseSpeedMultiplier.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
             this.numBaseSpeedMultiplier.Minimum = new decimal(new int[] {
             100,
             0,
@@ -268,7 +271,7 @@
             this.numBaseSpeedMultiplier.TabIndex = 1;
             this.numBaseSpeedMultiplier.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numBaseSpeedMultiplier.Value = new decimal(new int[] {
-            150,
+            100,
             0,
             0,
             0});
@@ -292,13 +295,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "World";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // lbStatus
-            // 
-            this.lbStatus.ForeColor = System.Drawing.Color.White;
-            this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(108, 17);
-            this.lbStatus.Text = "Status: Not Ingame";
             // 
             // FrmMain
             // 
