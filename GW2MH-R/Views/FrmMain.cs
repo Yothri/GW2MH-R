@@ -51,10 +51,12 @@ namespace GW2MH.Views
         private async void FrmMain_Shown(object sender, EventArgs e)
         {
             var processes = Process.GetProcessesByName("Gw2-64");
-            if(processes.Length == 0)
+            if (processes.Length == 0)
             {
+#if !DEBUG
                 MessageBox.Show("Guild Wars 2 (64 Bit) seems not to be running, please launch Guild Wars 2 first.", "Game client missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Close();
+#endif
             }
             else
             {
@@ -66,7 +68,7 @@ namespace GW2MH.Views
                     var contextPtr = IntPtr.Zero;
                     var contextCalcPtr = Memory.Pattern(Memory.TargetProcess.MainModule, MemoryData.ContextCalcPattern);
 
-                    if(contextCalcPtr != IntPtr.Zero)
+                    if (contextCalcPtr != IntPtr.Zero)
                     {
                         var jumpSize = (uint)MemoryData.ContextCalcJumpPatch(IntPtr.Zero).Length;
 
@@ -86,7 +88,7 @@ namespace GW2MH.Views
                     return contextPtr;
                 });
 
-                if(MemoryData.ContextPtr != IntPtr.Zero)
+                if (MemoryData.ContextPtr != IntPtr.Zero)
                 {
                     await InitialTick();
                 }
@@ -231,21 +233,28 @@ namespace GW2MH.Views
             }
         }
 
-        private void btnBuyUnlimited_Click(object sender, EventArgs e)
+        private async void btnBuyUnlimited_Click(object sender, EventArgs e)
         {
-            var accessToken = new OAuthTokenCredential(
-                "AYxsS5oBF7qELt4oHiK57cR3XJEZSr2P0oXqiuMS0NOuTSnmbyvALA_x50uB8tVDG6C4IncWPjpROVJu", 
-                "EEK-YEerLc8JDAaSgv9fKCyon78oPJycUbMUTMQX-zjoed3RlgNQsyDya7AQSVHcrcLQdVSphKVRgvzY").GetAccessToken();
-
-            var apiContext = new APIContext(accessToken);
-            var payment = new Payment()
+            var dr = MessageBox.Show("Unlocking the feature limits costs 5€, press Yes if you want to unlock the features now or No to keep everything as it is.", "Feature Unlock", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if(dr == DialogResult.Yes)
             {
-                intent = "sale",
-                payer = new Payer()
+                MessageBox.Show("We are creating your payment now, please approve the payment in the browser window.", "PayPal Approval", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Cursor = Cursors.WaitCursor;
+                var payment = await Task.Factory.StartNew(() =>
                 {
-                    payment_method = "paypal"
-                },
-                transactions = new System.Collections.Generic.List<Transaction>()
+                    var accessToken = new OAuthTokenCredential(
+                    "AYxsS5oBF7qELt4oHiK57cR3XJEZSr2P0oXqiuMS0NOuTSnmbyvALA_x50uB8tVDG6C4IncWPjpROVJu",
+                    "EEK-YEerLc8JDAaSgv9fKCyon78oPJycUbMUTMQX-zjoed3RlgNQsyDya7AQSVHcrcLQdVSphKVRgvzY").GetAccessToken();
+
+                    var apiContext = new APIContext(accessToken);
+                    return new Payment()
+                    {
+                        intent = "sale",
+                        payer = new Payer()
+                        {
+                            payment_method = "paypal"
+                        },
+                        transactions = new System.Collections.Generic.List<Transaction>()
                 {
                     {
                         new Transaction()
@@ -264,19 +273,19 @@ namespace GW2MH.Views
                         }
                     },
                 },
-                redirect_urls = new RedirectUrls()
-                {
-                    return_url = "https://www.paypal.com/return",
-                    cancel_url = "https://www.paypal.com/cancel"
-                }
-            }.Create(apiContext);
+                        redirect_urls = new RedirectUrls()
+                        {
+                            return_url = "http://api.yothri.com/paypal/test.php",
+                            cancel_url = "https://www.paypal.com/cancel"
+                        }
+                    }.Create(apiContext);
+                });
 
-            Process.Start(payment.GetApprovalUrl());
+                Cursor = Cursors.Default;
+                Process.Start(payment.GetApprovalUrl());
 
-            while(payment.state != "approved")
-                payment.Update(apiContext, new PatchRequest() { });
-
-            payment = payment.Execute(apiContext, new PaymentExecution() {  transactions = payment.transactions, payer_id = payment.payer.payer_info.payer_id });
+                lbStatus.Text = "Status: Waiting for payment approval...";
+            }
         }
     }
 }
