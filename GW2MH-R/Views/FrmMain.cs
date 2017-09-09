@@ -113,16 +113,25 @@ namespace GW2MH.Views
 
             await Task.Factory.StartNew(() =>
             {
-                while (!CharacterData.IsCharacterIngame) { }
+                while (!CharacterData.IsCharacterIngame)
+                {
+                    if(Memory == null || !Memory.IsRunning)
+                        break;
+                }
             });
 
-            if (Memory != null && Memory.IsRunning)
+            if (Memory != null && Memory.IsRunning && CharacterData.IsCharacterIngame)
             {
                 CharacterData.DefaultMoveSpeed = Memory.Read<float>(MemoryData.ContextPtr, MemoryData.MoveSpeedOffsets);
                 CharacterData.DefaultGravity = Memory.Read<float>(MemoryData.ContextPtr, MemoryData.GravityOffsets);
-                
+
                 tmrUpdater.Start();
                 lbStatus.Text = string.Format("Status: Ingame");
+            }
+            else
+            {
+                MessageBox.Show("Guild Wars 2 has closed, GW2MH-R will close now.", "Bye", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Close();
             }
         }
 
