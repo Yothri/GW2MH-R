@@ -72,5 +72,7 @@ namespace GW2MH.Core.Data
             64, // Transform
             532 // Gravity
         };
+
+        public static readonly IntPtr LootOffset = new IntPtr(0x200DAAB);
     }
 }

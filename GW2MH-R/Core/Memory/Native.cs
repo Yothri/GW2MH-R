@@ -41,9 +41,12 @@ namespace GW2MH.Core.Memory
         #region "USER32"
         [DllImport(USER32, SetLastError = true)]
         public static extern short GetAsyncKeyState(System.Windows.Forms.Keys vKey);
+
+        [DllImport(USER32, SetLastError = true)]
+        public static extern bool PostMessage(IntPtr hWnd, uint Msg, UInt64 wParam, Int64 lParam);
         #endregion
 
-#region "Flags"
+        #region "Flags"
         [Flags]
         public enum ProcessAccessFlags : uint
         {

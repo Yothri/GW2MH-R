@@ -33,7 +33,6 @@
             this.tmrUpdater = new System.Windows.Forms.Timer(this.components);
             this.ttDefault = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +53,8 @@
             this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
             this.cbSpeedhack = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cbAutoLoot = new System.Windows.Forms.CheckBox();
+            this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -77,13 +78,6 @@
             this.statusStrip.Size = new System.Drawing.Size(299, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
-            // 
-            // lbStatus
-            // 
-            this.lbStatus.ForeColor = System.Drawing.Color.White;
-            this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(108, 17);
-            this.lbStatus.Text = "Status: Not Ingame";
             // 
             // toolStrip
             // 
@@ -193,6 +187,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.cbAutoLoot);
             this.tabPage1.Controls.Add(this.cbFlyhack);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
@@ -296,6 +291,23 @@
             this.tabPage2.Text = "World";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // cbAutoLoot
+            // 
+            this.cbAutoLoot.AutoSize = true;
+            this.cbAutoLoot.Location = new System.Drawing.Point(8, 55);
+            this.cbAutoLoot.Name = "cbAutoLoot";
+            this.cbAutoLoot.Size = new System.Drawing.Size(72, 17);
+            this.cbAutoLoot.TabIndex = 7;
+            this.cbAutoLoot.Text = "Auto Loot";
+            this.cbAutoLoot.UseVisualStyleBackColor = true;
+            // 
+            // lbStatus
+            // 
+            this.lbStatus.ForeColor = System.Drawing.Color.White;
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(108, 17);
+            this.lbStatus.Text = "Status: Not Ingame";
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -351,6 +363,7 @@
         private System.Windows.Forms.NumericUpDown numBaseSpeedMultiplier;
         private System.Windows.Forms.CheckBox cbSpeedhack;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.CheckBox cbAutoLoot;
         private System.Windows.Forms.ToolStripStatusLabel lbStatus;
     }
 }

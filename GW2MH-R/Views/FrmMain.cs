@@ -3,6 +3,7 @@ using GW2MH.Core.Memory;
 using GW2MH.Core.Network;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -162,6 +163,16 @@ namespace GW2MH.Views
                     }
                     else
                         Memory.Write(MemoryData.ContextPtr, MemoryData.GravityOffsets, CharacterData.DefaultGravity);
+
+                    if(cbAutoLoot.Checked)
+                    {
+                        if(Memory.Read<byte>(MemoryData.LootOffset, true) == 64)
+                        {
+                            Native.PostMessage(Memory.TargetProcess.MainWindowHandle, 256u, 70, 2162689);
+                            Thread.Sleep(50);
+                            Native.PostMessage(Memory.TargetProcess.MainWindowHandle, 257u, 70, 2162689);
+                        }
+                    }
                 }
                 else
                 {
