@@ -41,11 +41,12 @@
             this.clipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.agentPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.characterPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transformPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextPointerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnBuyUnlimited = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cbAutoLoot = new System.Windows.Forms.CheckBox();
             this.cbFlyhack = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -53,7 +54,8 @@
             this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
             this.cbSpeedhack = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.cbAutoLoot = new System.Windows.Forms.CheckBox();
+            this.cbAntiKick = new System.Windows.Forms.CheckBox();
+            this.btnRemoteTP = new System.Windows.Forms.Button();
             this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -133,7 +135,7 @@
             this.clipboardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.agentPointerToolStripMenuItem,
             this.characterPointerToolStripMenuItem,
-            this.contextToolStripMenuItem,
+            this.transformPointerToolStripMenuItem,
             this.contextPointerToolStripMenuItem});
             this.clipboardToolStripMenuItem.Name = "clipboardToolStripMenuItem";
             this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
@@ -144,24 +146,28 @@
             this.agentPointerToolStripMenuItem.Name = "agentPointerToolStripMenuItem";
             this.agentPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.agentPointerToolStripMenuItem.Text = "Agent Pointer";
+            this.agentPointerToolStripMenuItem.Click += new System.EventHandler(this.agentPointerToolStripMenuItem_Click);
             // 
             // characterPointerToolStripMenuItem
             // 
             this.characterPointerToolStripMenuItem.Name = "characterPointerToolStripMenuItem";
             this.characterPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.characterPointerToolStripMenuItem.Text = "Character Pointer";
+            this.characterPointerToolStripMenuItem.Click += new System.EventHandler(this.characterPointerToolStripMenuItem_Click);
             // 
-            // contextToolStripMenuItem
+            // transformPointerToolStripMenuItem
             // 
-            this.contextToolStripMenuItem.Name = "contextToolStripMenuItem";
-            this.contextToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.contextToolStripMenuItem.Text = "Transform Pointer";
+            this.transformPointerToolStripMenuItem.Name = "transformPointerToolStripMenuItem";
+            this.transformPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.transformPointerToolStripMenuItem.Text = "Transform Pointer";
+            this.transformPointerToolStripMenuItem.Click += new System.EventHandler(this.transformPointerToolStripMenuItem_Click);
             // 
             // contextPointerToolStripMenuItem
             // 
             this.contextPointerToolStripMenuItem.Name = "contextPointerToolStripMenuItem";
             this.contextPointerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.contextPointerToolStripMenuItem.Text = "Context Pointer";
+            this.contextPointerToolStripMenuItem.Click += new System.EventHandler(this.contextPointerToolStripMenuItem_Click);
             // 
             // btnBuyUnlimited
             // 
@@ -187,6 +193,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnRemoteTP);
+            this.tabPage1.Controls.Add(this.cbAntiKick);
             this.tabPage1.Controls.Add(this.cbAutoLoot);
             this.tabPage1.Controls.Add(this.cbFlyhack);
             this.tabPage1.Controls.Add(this.label2);
@@ -201,6 +209,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Character";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cbAutoLoot
+            // 
+            this.cbAutoLoot.AutoSize = true;
+            this.cbAutoLoot.Location = new System.Drawing.Point(8, 55);
+            this.cbAutoLoot.Name = "cbAutoLoot";
+            this.cbAutoLoot.Size = new System.Drawing.Size(72, 17);
+            this.cbAutoLoot.TabIndex = 7;
+            this.cbAutoLoot.Text = "Auto Loot";
+            this.cbAutoLoot.UseVisualStyleBackColor = true;
             // 
             // cbFlyhack
             // 
@@ -291,15 +309,25 @@
             this.tabPage2.Text = "World";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // cbAutoLoot
+            // cbAntiKick
             // 
-            this.cbAutoLoot.AutoSize = true;
-            this.cbAutoLoot.Location = new System.Drawing.Point(8, 55);
-            this.cbAutoLoot.Name = "cbAutoLoot";
-            this.cbAutoLoot.Size = new System.Drawing.Size(72, 17);
-            this.cbAutoLoot.TabIndex = 7;
-            this.cbAutoLoot.Text = "Auto Loot";
-            this.cbAutoLoot.UseVisualStyleBackColor = true;
+            this.cbAntiKick.AutoSize = true;
+            this.cbAntiKick.Location = new System.Drawing.Point(8, 78);
+            this.cbAntiKick.Name = "cbAntiKick";
+            this.cbAntiKick.Size = new System.Drawing.Size(68, 17);
+            this.cbAntiKick.TabIndex = 7;
+            this.cbAntiKick.Text = "Anti Kick";
+            this.cbAntiKick.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoteTP
+            // 
+            this.btnRemoteTP.Location = new System.Drawing.Point(99, 32);
+            this.btnRemoteTP.Name = "btnRemoteTP";
+            this.btnRemoteTP.Size = new System.Drawing.Size(184, 23);
+            this.btnRemoteTP.TabIndex = 7;
+            this.btnRemoteTP.Text = "Remote Trading Post";
+            this.btnRemoteTP.UseVisualStyleBackColor = true;
+            this.btnRemoteTP.Click += new System.EventHandler(this.btnRemoteTP_Click);
             // 
             // lbStatus
             // 
@@ -351,7 +379,7 @@
         private System.Windows.Forms.ToolStripMenuItem clipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem agentPointerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem characterPointerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem contextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem transformPointerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contextPointerToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton btnBuyUnlimited;
         private System.Windows.Forms.TabControl tabControl1;
@@ -364,6 +392,8 @@
         private System.Windows.Forms.CheckBox cbSpeedhack;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.CheckBox cbAutoLoot;
+        private System.Windows.Forms.CheckBox cbAntiKick;
+        private System.Windows.Forms.Button btnRemoteTP;
         private System.Windows.Forms.ToolStripStatusLabel lbStatus;
     }
 }

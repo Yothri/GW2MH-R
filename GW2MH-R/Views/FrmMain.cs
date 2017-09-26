@@ -22,9 +22,12 @@ namespace GW2MH.Views
 
         internal LoginResponse LoginResponse { get; private set; }
 
+        private Stopwatch stopwatch;
+
         public FrmMain()
         {
             InitializeComponent();
+            stopwatch = new Stopwatch();
 
             LoginResponse = new LoginResponse()
             {
@@ -41,6 +44,7 @@ namespace GW2MH.Views
         {
             ttDefault.SetToolTip(numBaseSpeedMultiplier, "If Speedhack is enabled, this defines the speed in percent how fast your character is moving.");
             ttDefault.SetToolTip(numExtSpeedMultiplier, "If Speedhack is enabled and Left Shift is pressed, then it multiplies your speed using this value.");
+            ttDefault.SetToolTip(cbAntiKick, "Every 5 seconds, W and S is being sent to the game to keep you ingame.");
 
 #if DEBUG
             DevTools.Visible = true;
@@ -50,9 +54,15 @@ namespace GW2MH.Views
             {
                 numBaseSpeedMultiplier.Maximum = 999999;
                 numExtSpeedMultiplier.Maximum = 999999;
+                btnRemoteTP.Enabled = true;
+                ttDefault.SetToolTip(btnRemoteTP, "Get your items and money remotely from trading post.");
             }
             else
+            {
                 btnBuyUnlimited.Visible = true;
+                btnRemoteTP.Enabled = false;
+                ttDefault.SetToolTip(btnRemoteTP, "Buy GW2MH-R Feature Limit Unlock to unlock this feature.");
+            }
         }
 
         private async void FrmMain_Shown(object sender, EventArgs e)
@@ -69,6 +79,15 @@ namespace GW2MH.Views
             {
                 TargetProcess = processes[0];
                 Memory = new MemSharp(TargetProcess);
+
+                MemoryData.RemoteTradingPostAddress = await Task.Factory.StartNew(() =>
+                {
+                    return Memory.Pattern(Memory.TargetProcess.MainModule, MemoryData.RemoteTradingPostPattern);
+                });
+
+                if (MemoryData.RemoteTradingPostAddress == IntPtr.Zero)
+                    btnRemoteTP.Enabled = false;
+
 
                 MemoryData.ContextPtr = await Task.Factory.StartNew(() =>
                 {
@@ -182,6 +201,31 @@ namespace GW2MH.Views
                             Native.PostMessage(Memory.TargetProcess.MainWindowHandle, 257u, 70, 2162689);
                         }
                     }
+
+                    if (cbAntiKick.Checked && !stopwatch.IsRunning)
+                        stopwatch.Start();
+                    else if (cbAntiKick.Checked && stopwatch.IsRunning)
+                    {
+                        if (stopwatch.ElapsedMilliseconds >= 5000) // 60000
+                        {
+
+                            var windowHandle = Native.FindWindow(null, "Guild Wars 2");
+                            if(windowHandle != IntPtr.Zero)
+                            {
+                                Native.PostMessage(windowHandle, 256u, 38, 289931265);
+                                Thread.Sleep(320);
+                                Native.PostMessage(windowHandle, 257u, 38, 289931265);
+                                Thread.Sleep(100);
+                                Native.PostMessage(windowHandle, 256u, 40, 22020097);
+                                Thread.Sleep(900);
+                                Native.PostMessage(windowHandle, 257u, 40, 22020097);
+                            }
+
+                            stopwatch.Restart();
+                        }
+                    }
+                    else
+                        stopwatch.Stop();
                 }
                 else
                 {
@@ -239,16 +283,6 @@ namespace GW2MH.Views
             }
         }
 
-        private void contextToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Memory.IsRunning)
-            {
-                var transformOffsets = new int[] { MemoryData.MoveSpeedOffsets[0], MemoryData.MoveSpeedOffsets[1], MemoryData.MoveSpeedOffsets[2], MemoryData.MoveSpeedOffsets[3] };
-
-                Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, transformOffsets).ToString("X8"));
-            }
-        }
-
         private void contextPointerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Memory.IsRunning)
@@ -275,6 +309,25 @@ namespace GW2MH.Views
                     MessageBox.Show(paymentCreateResponse.error_message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 Cursor = Cursors.Default;
+            }
+        }
+
+        private void transformPointerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Memory.IsRunning)
+            {
+                var contextOffsets = new int[] { MemoryData.MoveSpeedOffsets[0], MemoryData.MoveSpeedOffsets[1], MemoryData.MoveSpeedOffsets[2], MemoryData.MoveSpeedOffsets[3] };
+
+                Clipboard.SetText(Memory.ReadMultiLevelPointer(MemoryData.ContextPtr, contextOffsets).ToString("X8"));
+            }
+        }
+
+        private void btnRemoteTP_Click(object sender, EventArgs e)
+        {
+            IntPtr outPtr;
+            if(Native.CreateRemoteThread(Memory.ElevatedHandle, IntPtr.Zero, 0u, MemoryData.RemoteTradingPostAddress, IntPtr.Zero, 0u, out outPtr) == IntPtr.Zero)
+            {
+                MessageBox.Show("That did not work properly, please contact the administrator to fix this problem.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

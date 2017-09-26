@@ -36,6 +36,9 @@ namespace GW2MH.Core.Memory
 
         [DllImport(KERNEL32, SetLastError = true)]
         public static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAddress, uint nSize, uint dwFreeType);
+
+        [DllImport(KERNEL32, SetLastError = true)]
+        public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out IntPtr lpThreadId);
         #endregion
 
         #region "USER32"
@@ -44,6 +47,9 @@ namespace GW2MH.Core.Memory
 
         [DllImport(USER32, SetLastError = true)]
         public static extern bool PostMessage(IntPtr hWnd, uint Msg, UInt64 wParam, Int64 lParam);
+
+        [DllImport(USER32, SetLastError = true)]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
         #endregion
 
         #region "Flags"

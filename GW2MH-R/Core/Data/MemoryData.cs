@@ -74,5 +74,8 @@ namespace GW2MH.Core.Data
         };
 
         public static readonly IntPtr LootOffset = new IntPtr(0x200DAAB);
+
+        public static readonly string RemoteTradingPostPattern = "48 83 EC 28 B8 ? ? ? ? 66 89 44 24 30 E8 ? ? ? ? ? ? ? ? ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 48 83 C4 28 C3 CC CC CC CC CC CC 40 53 48 83 EC 40";
+        public static IntPtr RemoteTradingPostAddress;
     }
 }
