@@ -88,6 +88,13 @@ namespace GW2MH.Views
                 if (MemoryData.RemoteTradingPostAddress == IntPtr.Zero)
                     btnRemoteTP.Enabled = false;
 
+                MemoryData.SetFOVAddress = await Task.Factory.StartNew(() =>
+                {
+                    return Memory.Pattern(Memory.TargetProcess.MainModule, MemoryData.SetFOVPattern);
+                });
+
+                if (MemoryData.SetFOVAddress == IntPtr.Zero)
+                    cbFOV.Enabled = false;
 
                 MemoryData.ContextPtr = await Task.Factory.StartNew(() =>
                 {
@@ -202,11 +209,16 @@ namespace GW2MH.Views
                         }
                     }
 
+                    if(cbFOV.Checked)
+                    {
+                        Memory.Write(Memory.Read<IntPtr>((IntPtr)(Memory.TargetProcess.MainModule.BaseAddress.ToInt64() + MemoryData.CameraPtr.ToInt64())), MemoryData.FOVOffsets, (float)numFOV.Value);
+                    }
+
                     if (cbAntiKick.Checked && !stopwatch.IsRunning)
                         stopwatch.Start();
                     else if (cbAntiKick.Checked && stopwatch.IsRunning)
                     {
-                        if (stopwatch.ElapsedMilliseconds >= 5000) // 60000
+                        if (stopwatch.ElapsedMilliseconds >= 480000) // 8 mins
                         {
 
                             var windowHandle = Native.FindWindow(null, "Guild Wars 2");
@@ -328,6 +340,17 @@ namespace GW2MH.Views
             if(Native.CreateRemoteThread(Memory.ElevatedHandle, IntPtr.Zero, 0u, MemoryData.RemoteTradingPostAddress, IntPtr.Zero, 0u, out outPtr) == IntPtr.Zero)
             {
                 MessageBox.Show("That did not work properly, please contact the administrator to fix this problem.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void cbFOV_CheckedChanged(object sender, EventArgs e)
+        {
+            if(Memory.IsRunning)
+            {
+                if (cbFOV.Checked)
+                    Memory.Write(MemoryData.SetFOVAddress, MemoryData.DisableSetFOV);
+                else
+                    Memory.Write(MemoryData.SetFOVAddress, MemoryData.EnableSetFOV);
             }
         }
     }

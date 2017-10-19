@@ -73,9 +73,21 @@ namespace GW2MH.Core.Data
             532 // Gravity
         };
 
-        public static readonly IntPtr LootOffset = new IntPtr(0x200DAAB);
+        public static readonly IntPtr LootOffset = new IntPtr(0x203974B);
 
         public static readonly string RemoteTradingPostPattern = "48 83 EC 28 B8 ? ? ? ? 66 89 44 24 30 E8 ? ? ? ? ? ? ? ? ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 48 83 C4 28 C3 CC CC CC CC CC CC 40 53 48 83 EC 40";
         public static IntPtr RemoteTradingPostAddress;
+
+        public static readonly string SetFOVPattern = "? ? 48 83 EC 20 48 83 79 08 00 48 8B D9 75 22 E8";
+        public static readonly byte[] DisableSetFOV = new byte[] { 0xC3 };
+        public static readonly byte[] EnableSetFOV = new byte[] { 0x40, 0x53 };
+        public static IntPtr SetFOVAddress;
+        public static IntPtr CameraPtr = (IntPtr)0x01F80390;
+        public static readonly int[] FOVOffsets = new int[]
+        {
+            0x398,
+            0x0,
+            0x1C
+        };
     }
 }

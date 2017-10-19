@@ -46,6 +46,8 @@
             this.btnBuyUnlimited = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnRemoteTP = new System.Windows.Forms.Button();
+            this.cbAntiKick = new System.Windows.Forms.CheckBox();
             this.cbAutoLoot = new System.Windows.Forms.CheckBox();
             this.cbFlyhack = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -54,15 +56,16 @@
             this.numBaseSpeedMultiplier = new System.Windows.Forms.NumericUpDown();
             this.cbSpeedhack = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.cbAntiKick = new System.Windows.Forms.CheckBox();
-            this.btnRemoteTP = new System.Windows.Forms.Button();
+            this.cbFOV = new System.Windows.Forms.CheckBox();
             this.lbStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.numFOV = new System.Windows.Forms.NumericUpDown();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numExtSpeedMultiplier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBaseSpeedMultiplier)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numFOV)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrUpdater
@@ -193,6 +196,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.numFOV);
+            this.tabPage1.Controls.Add(this.cbFOV);
             this.tabPage1.Controls.Add(this.btnRemoteTP);
             this.tabPage1.Controls.Add(this.cbAntiKick);
             this.tabPage1.Controls.Add(this.cbAutoLoot);
@@ -209,6 +214,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Character";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoteTP
+            // 
+            this.btnRemoteTP.Location = new System.Drawing.Point(99, 32);
+            this.btnRemoteTP.Name = "btnRemoteTP";
+            this.btnRemoteTP.Size = new System.Drawing.Size(184, 23);
+            this.btnRemoteTP.TabIndex = 7;
+            this.btnRemoteTP.Text = "Remote Trading Post";
+            this.btnRemoteTP.UseVisualStyleBackColor = true;
+            this.btnRemoteTP.Click += new System.EventHandler(this.btnRemoteTP_Click);
+            // 
+            // cbAntiKick
+            // 
+            this.cbAntiKick.AutoSize = true;
+            this.cbAntiKick.Location = new System.Drawing.Point(8, 78);
+            this.cbAntiKick.Name = "cbAntiKick";
+            this.cbAntiKick.Size = new System.Drawing.Size(68, 17);
+            this.cbAntiKick.TabIndex = 7;
+            this.cbAntiKick.Text = "Anti Kick";
+            this.cbAntiKick.UseVisualStyleBackColor = true;
             // 
             // cbAutoLoot
             // 
@@ -309,25 +334,16 @@
             this.tabPage2.Text = "World";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // cbAntiKick
+            // cbFOV
             // 
-            this.cbAntiKick.AutoSize = true;
-            this.cbAntiKick.Location = new System.Drawing.Point(8, 78);
-            this.cbAntiKick.Name = "cbAntiKick";
-            this.cbAntiKick.Size = new System.Drawing.Size(68, 17);
-            this.cbAntiKick.TabIndex = 7;
-            this.cbAntiKick.Text = "Anti Kick";
-            this.cbAntiKick.UseVisualStyleBackColor = true;
-            // 
-            // btnRemoteTP
-            // 
-            this.btnRemoteTP.Location = new System.Drawing.Point(99, 32);
-            this.btnRemoteTP.Name = "btnRemoteTP";
-            this.btnRemoteTP.Size = new System.Drawing.Size(184, 23);
-            this.btnRemoteTP.TabIndex = 7;
-            this.btnRemoteTP.Text = "Remote Trading Post";
-            this.btnRemoteTP.UseVisualStyleBackColor = true;
-            this.btnRemoteTP.Click += new System.EventHandler(this.btnRemoteTP_Click);
+            this.cbFOV.AutoSize = true;
+            this.cbFOV.Location = new System.Drawing.Point(8, 101);
+            this.cbFOV.Name = "cbFOV";
+            this.cbFOV.Size = new System.Drawing.Size(90, 17);
+            this.cbFOV.TabIndex = 7;
+            this.cbFOV.Text = "FOV Override";
+            this.cbFOV.UseVisualStyleBackColor = true;
+            this.cbFOV.CheckedChanged += new System.EventHandler(this.cbFOV_CheckedChanged);
             // 
             // lbStatus
             // 
@@ -335,6 +351,30 @@
             this.lbStatus.Name = "lbStatus";
             this.lbStatus.Size = new System.Drawing.Size(108, 17);
             this.lbStatus.Text = "Status: Not Ingame";
+            // 
+            // numFOV
+            // 
+            this.numFOV.DecimalPlaces = 3;
+            this.numFOV.Location = new System.Drawing.Point(104, 98);
+            this.numFOV.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.numFOV.Minimum = new decimal(new int[] {
+            68355856,
+            1,
+            0,
+            655360});
+            this.numFOV.Name = "numFOV";
+            this.numFOV.Size = new System.Drawing.Size(179, 20);
+            this.numFOV.TabIndex = 8;
+            this.numFOV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numFOV.Value = new decimal(new int[] {
+            123,
+            0,
+            0,
+            131072});
             // 
             // FrmMain
             // 
@@ -362,6 +402,7 @@
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numExtSpeedMultiplier)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBaseSpeedMultiplier)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numFOV)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,6 +435,8 @@
         private System.Windows.Forms.CheckBox cbAutoLoot;
         private System.Windows.Forms.CheckBox cbAntiKick;
         private System.Windows.Forms.Button btnRemoteTP;
+        private System.Windows.Forms.CheckBox cbFOV;
         private System.Windows.Forms.ToolStripStatusLabel lbStatus;
+        private System.Windows.Forms.NumericUpDown numFOV;
     }
 }
